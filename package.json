@@ -1,0 +1,46 @@
+{
+  "name": "aviasales-kondratenko",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-scripts-ts": "2.15.1"
+  },
+  "scripts": {
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject",
+    "lint:ts": "tslint 'src/**/*.{ts,tsx}' --fix",
+    "lint:css": "stylelint 'src/**/*.{css,scss}' --fix --cache --color",
+    "prettier": "prettier --config ./.prettierrc.js --write 'src/**/*.{ts,tsx}'"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "npm run prettier",
+      "npm run lint:ts",
+      "git add"
+    ],
+    "*.{css,scss}": [
+      "npm run lint:css",
+      "git add"
+    ]
+  },
+  "devDependencies": {
+    "@types/jest": "^22.2.3",
+    "@types/node": "^9.6.6",
+    "@types/react": "^16.3.12",
+    "@types/react-dom": "^16.0.5",
+    "prettier": "1.12.1",
+    "stylelint": "^9.2.0",
+    "stylelint-config-standard": "^18.2.0",
+    "tslint": "^5.9.1",
+    "typescript": "^2.8.3"
+  }
+}
