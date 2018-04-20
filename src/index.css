@@ -8,10 +8,22 @@
 
 html {
   font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
 }
 
 body {
   margin: 0;
   padding: 0;
   background-color: #f3f7fa;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  display: block;
+  margin: 0;
+  padding: 0;
 }

@@ -20,6 +20,16 @@
   flex: 1 1 auto;
 }
 
+.template__title {
+  margin-bottom: 0.91em;
+  font-size: 0.75em;
+  line-height: 1.58;
+  letter-spacing: 0.5px;
+  text-align: left;
+  color: #4a4a4a;
+  text-transform: uppercase;
+}
+
 @media (max-width: 840px) {
   .template__aside {
     margin-right: 0;

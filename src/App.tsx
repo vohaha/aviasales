@@ -3,6 +3,7 @@ import './App.css';
 import Header from './components/Header';
 import Logo from './components/Logo';
 import Paper from './components/Paper';
+import Radio from './components/Radio';
 import Ticket, { ITicketProps } from './components/Ticket';
 
 const tickets = [
@@ -157,7 +158,24 @@ class App extends React.Component {
         <main>
           <div className="template">
             <Paper tag="aside" className="template__aside">
-              aside
+              <h2 className="template__title">Валюта</h2>
+              <Radio
+                radios={[
+                  {
+                    value: 'rub',
+                    labeltext: 'rub',
+                  },
+                  {
+                    value: 'usd',
+                    labeltext: 'usd',
+                  },
+                  {
+                    value: 'eur',
+                    labeltext: 'eur',
+                  },
+                ]}
+                name="currency"
+              />
             </Paper>
             <section className="template__content">
               {tickets
