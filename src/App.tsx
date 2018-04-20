@@ -2,6 +2,7 @@ import * as React from 'react';
 import './App.css';
 import Header from './components/Header';
 import Logo from './components/Logo';
+import Paper from './components/Paper';
 import Ticket, { ITicketProps } from './components/Ticket';
 
 const tickets = [
@@ -154,9 +155,11 @@ class App extends React.Component {
           <Logo />
         </Header>
         <main>
-          <div className="container">
-            <aside>aside</aside>
-            <section>
+          <div className="template">
+            <Paper tag="aside" className="template__aside">
+              aside
+            </Paper>
+            <section className="template__content">
               {tickets
                 .sort(sortFn)
                 .map((ticket: ITicketProps) => (

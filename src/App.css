@@ -1,5 +1,27 @@
-.container {
+.template {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
   width: 100%;
-  max-width: 820px;
+  max-width: 840px;
   margin: 0 auto;
+  padding: 0 20px;
+}
+
+.template__aside {
+  flex: 1 1 12.5em;
+  min-width: 12.5em;
+  margin-right: 1.25em;
+  margin-bottom: 1.25em;
+  padding: 1em;
+}
+
+.template__content {
+  flex: 1 1 auto;
+}
+
+@media (max-width: 840px) {
+  .template__aside {
+    margin-right: 0;
+  }
 }
