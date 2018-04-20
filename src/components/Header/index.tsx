@@ -1,12 +1,7 @@
-import { ReactNode } from 'react';
 import * as React from 'react';
 import './index.css';
 
-interface Iprops {
-  children?: ReactNode;
-}
-
-export const Header: React.StatelessComponent<Iprops> = ({ children }) => {
+export const Header: React.SFC<React.HTMLProps<HTMLElement>> = ({ children }) => {
   return <header className="header">{React.Children.toArray(children)}</header>;
 };
 
