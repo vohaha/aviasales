@@ -20,6 +20,10 @@
   margin-bottom: 1.875em;
 }
 
+.template__block:last-child {
+  margin-bottom: 0;
+}
+
 .template__block--full-width {
   margin-left: -1em;
   margin-right: -1em;

@@ -1,10 +1,7 @@
 import * as React from 'react';
-import './App.css';
 import Button from './components/Button';
 import ChoiceBox from './components/ChoiceBox';
-import Header from './components/Header';
-import Logo from './components/Logo';
-import Paper from './components/Paper';
+import TemplateBase from './components/TemplateBase';
 import Ticket, { ITicketProps } from './components/Ticket';
 
 const tickets = [
@@ -149,92 +146,77 @@ const sortFn: (
   },
 ) => any = (a, b) => a.price > b.price;
 
+const Aside = () => (
+  <React.Fragment>
+    <section className="template__block">
+      <h2 className="template__title">Валюта</h2>
+      <ChoiceBox
+        type="radio"
+        radios={[
+          {
+            value: 'rub',
+            labeltext: 'rub',
+            defaultChecked: true,
+          },
+          {
+            value: 'usd',
+            labeltext: 'usd',
+          },
+          {
+            value: 'eur',
+            labeltext: 'eur',
+          },
+        ]}
+        name="currency"
+      />
+    </section>
+    <section className="template__block template__block--full-width">
+      <h2 className="template__title">Количество пересадок</h2>
+      <ChoiceBox
+        type="checkbox"
+        radios={[
+          {
+            value: 'all',
+            labeltext: 'Все',
+            additionalrender: () => <Button className="checkbox__only">Только</Button>,
+          },
+          {
+            value: '0',
+            labeltext: 'Без пересадок',
+            additionalrender: () => <Button className="checkbox__only">Только</Button>,
+          },
+          {
+            value: '2',
+            labeltext: '2 пересадки',
+            additionalrender: () => <Button className="checkbox__only">Только</Button>,
+          },
+          {
+            value: '3',
+            labeltext: '3 пересадки',
+            additionalrender: () => <Button className="checkbox__only">Только</Button>,
+          },
+        ]}
+        name="transfer"
+      />
+    </section>
+  </React.Fragment>
+);
+
+const Content = () =>
+  tickets
+    .sort(sortFn)
+    .map((ticket: ITicketProps) => (
+      <Ticket
+        key={`${ticket.arrival_time}${ticket.departure_time}${ticket.origin}${
+          ticket.destination
+        }`}
+        {...ticket}
+      />
+    ));
+
 class App extends React.Component {
   public render() {
-    return (
-      <React.Fragment>
-        <Header>
-          <Logo />
-        </Header>
-        <main>
-          <div className="template">
-            <Paper tag="aside" className="template__aside">
-              <section className="template__block">
-                <h2 className="template__title">Валюта</h2>
-                <ChoiceBox
-                  type="radio"
-                  radios={[
-                    {
-                      value: 'rub',
-                      labeltext: 'rub',
-                      defaultChecked: true,
-                    },
-                    {
-                      value: 'usd',
-                      labeltext: 'usd',
-                    },
-                    {
-                      value: 'eur',
-                      labeltext: 'eur',
-                    },
-                  ]}
-                  name="currency"
-                />
-              </section>
-              <section className="template__block template__block--full-width">
-                <h2 className="template__title">Количество пересадок</h2>
-                <ChoiceBox
-                  type="checkbox"
-                  radios={[
-                    {
-                      value: 'all',
-                      labeltext: 'Все',
-                      additionalrender: () => (
-                        <Button className="checkbox__only">Только</Button>
-                      ),
-                    },
-                    {
-                      value: '0',
-                      labeltext: 'Без пересадок',
-                      additionalrender: () => (
-                        <Button className="checkbox__only">Только</Button>
-                      ),
-                    },
-                    {
-                      value: '2',
-                      labeltext: '2 пересадки',
-                      additionalrender: () => (
-                        <Button className="checkbox__only">Только</Button>
-                      ),
-                    },
-                    {
-                      value: '3',
-                      labeltext: '3 пересадки',
-                      additionalrender: () => (
-                        <Button className="checkbox__only">Только</Button>
-                      ),
-                    },
-                  ]}
-                  name="transfer"
-                />
-              </section>
-            </Paper>
-            <section className="template__content">
-              {tickets
-                .sort(sortFn)
-                .map((ticket: ITicketProps) => (
-                  <Ticket
-                    key={`${ticket.arrival_time}${ticket.departure_time}${ticket.origin}${
-                      ticket.destination
-                    }`}
-                    {...ticket}
-                  />
-                ))}
-            </section>
-          </div>
-        </main>
-      </React.Fragment>
-    );
+    return <TemplateBase aside={Aside} content={Content} />;
   }
 }
 
