@@ -16,6 +16,20 @@
   padding: 1em;
 }
 
+.template__block {
+  margin-bottom: 1.875em;
+}
+
+.template__block--full-width {
+  margin-left: -1em;
+  margin-right: -1em;
+}
+
+.template__block--full-width .template__title {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
 .template__content {
   flex: 1 1 auto;
 }

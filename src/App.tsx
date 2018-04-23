@@ -1,9 +1,10 @@
 import * as React from 'react';
 import './App.css';
+import Button from './components/Button';
+import ChoiceBox from './components/ChoiceBox';
 import Header from './components/Header';
 import Logo from './components/Logo';
 import Paper from './components/Paper';
-import Radio from './components/Radio';
 import Ticket, { ITicketProps } from './components/Ticket';
 
 const tickets = [
@@ -158,24 +159,65 @@ class App extends React.Component {
         <main>
           <div className="template">
             <Paper tag="aside" className="template__aside">
-              <h2 className="template__title">Валюта</h2>
-              <Radio
-                radios={[
-                  {
-                    value: 'rub',
-                    labeltext: 'rub',
-                  },
-                  {
-                    value: 'usd',
-                    labeltext: 'usd',
-                  },
-                  {
-                    value: 'eur',
-                    labeltext: 'eur',
-                  },
-                ]}
-                name="currency"
-              />
+              <section className="template__block">
+                <h2 className="template__title">Валюта</h2>
+                <ChoiceBox
+                  type="radio"
+                  radios={[
+                    {
+                      value: 'rub',
+                      labeltext: 'rub',
+                      defaultChecked: true,
+                    },
+                    {
+                      value: 'usd',
+                      labeltext: 'usd',
+                    },
+                    {
+                      value: 'eur',
+                      labeltext: 'eur',
+                    },
+                  ]}
+                  name="currency"
+                />
+              </section>
+              <section className="template__block template__block--full-width">
+                <h2 className="template__title">Количество пересадок</h2>
+                <ChoiceBox
+                  type="checkbox"
+                  radios={[
+                    {
+                      value: 'all',
+                      labeltext: 'Все',
+                      additionalrender: () => (
+                        <Button className="checkbox__only">Только</Button>
+                      ),
+                    },
+                    {
+                      value: '0',
+                      labeltext: 'Без пересадок',
+                      additionalrender: () => (
+                        <Button className="checkbox__only">Только</Button>
+                      ),
+                    },
+                    {
+                      value: '2',
+                      labeltext: '2 пересадки',
+                      additionalrender: () => (
+                        <Button className="checkbox__only">Только</Button>
+                      ),
+                    },
+                    {
+                      value: '3',
+                      labeltext: '3 пересадки',
+                      additionalrender: () => (
+                        <Button className="checkbox__only">Только</Button>
+                      ),
+                    },
+                  ]}
+                  name="transfer"
+                />
+              </section>
             </Paper>
             <section className="template__content">
               {tickets
