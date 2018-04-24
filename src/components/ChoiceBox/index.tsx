@@ -3,7 +3,7 @@ import * as React from 'react';
 import './index.css';
 
 interface IChoiceBoxProps extends React.HTMLProps<HTMLUListElement> {
-  radios: Array<
+  variants: Array<
     React.HTMLProps<HTMLInputElement> & {
       additionalrender?: () => any;
       labeltext: string;
@@ -11,12 +11,23 @@ interface IChoiceBoxProps extends React.HTMLProps<HTMLUListElement> {
   >;
   name: string;
   type: 'radio' | 'checkbox';
+  commonOnchange?: (e: React.FormEvent<HTMLUListElement>) => void;
 }
 
-export const Radio: React.SFC<IChoiceBoxProps> = ({ type, radios, name, ...props }) => {
+export const ChoiceBox: React.SFC<IChoiceBoxProps> = ({
+  type,
+  variants,
+  name,
+  commonOnchange,
+  ...props
+}) => {
   return (
-    <ul {...props} className={classNames(type, props.className || '')}>
-      {radios.map(({ additionalrender, ...item }, index) => (
+    <ul
+      {...props}
+      className={classNames(type, props.className || '')}
+      onChange={commonOnchange}
+    >
+      {variants.map(({ additionalrender, ...item }, index) => (
         <li className={`${type}__item`} key={item.value + ''}>
           <input
             id={name + index}
@@ -35,4 +46,4 @@ export const Radio: React.SFC<IChoiceBoxProps> = ({ type, radios, name, ...props
   );
 };
 
-export default Radio;
+export default ChoiceBox;

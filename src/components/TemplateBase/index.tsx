@@ -1,13 +1,12 @@
 import * as React from 'react';
+import Aside from '../../containers/Aside';
+import Tickets from '../../containers/Tickets';
 import Header from '../Header';
 import Logo from '../Logo';
 import Paper from '../Paper';
 import './index.css';
 
-export const TemplateBase: React.SFC<{
-  aside: () => any;
-  content: () => any;
-}> = props => {
+export const TemplateBase: React.SFC = () => {
   return (
     <React.Fragment>
       <Header>
@@ -16,10 +15,10 @@ export const TemplateBase: React.SFC<{
       <main>
         <div className="template">
           <Paper tag="aside" className="template__aside">
-            {props.aside && props.aside()}
+            <Aside />
           </Paper>
           <section className="template__content">
-            {props.content && props.content()}
+            <Tickets />
           </section>
         </div>
       </main>

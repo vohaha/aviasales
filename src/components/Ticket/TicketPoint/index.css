@@ -1,6 +1,7 @@
 .ticket-point {
   display: flex;
   flex-direction: column;
+  max-width: 6.8em;
   font-size: 1em;
 }
 

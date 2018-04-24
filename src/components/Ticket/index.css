@@ -1,5 +1,6 @@
 .ticket {
   display: flex;
+  flex-wrap: wrap;
   min-height: 10em;
   margin-bottom: 1.25em;
   font-size: 1rem;
@@ -7,6 +8,7 @@
 
 .ticket__side {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -50,8 +52,8 @@
 
 .ticket__stops {
   position: relative;
-  min-width: 5.9em;
-  min-height: 2em;
+  width: 11em;
+  min-height: 2.6em;
   padding: 0 3.4em 0.2em 1.8em;
   font-size: 0.625em;
   font-weight: 600;
@@ -84,7 +86,7 @@
   font-size: 1.3em;
 }
 
-@media (max-width: 580px) {
+@media (max-width: 600px) {
   .ticket__main {
     flex-direction: column;
     align-items: center;

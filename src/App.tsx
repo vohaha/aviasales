@@ -1,11 +1,15 @@
 import * as React from 'react';
+import { Provider } from 'react-redux';
 import TemplateBase from './components/TemplateBase';
-import Aside from './containers/Aside';
-import Tickets from './containers/Tickets';
+import store from './store';
 
 class App extends React.Component {
   public render() {
-    return <TemplateBase aside={Aside} content={Tickets} />;
+    return (
+      <Provider store={store}>
+        <TemplateBase />
+      </Provider>
+    );
   }
 }
 
