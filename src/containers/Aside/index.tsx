@@ -1,14 +1,19 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { filterTicketsActionCreator, filterValueType } from '../../actions/filters';
+import {
+  filterTicketsActionCreator,
+  filterValueType,
+  resetTicketsFilterActionCreator,
+} from '../../actions/filters';
 import Button from '../../components/Button';
 import ChoiceBox from '../../components/ChoiceBox';
 
 class Aside extends React.Component<{
-  changeTicketFilter: (filterValue: filterValueType) => void;
+  changeTicketsFilter: (filterValue: filterValueType) => void;
+  resetTicketsFilter: () => void;
 }> {
   public render() {
-    const { changeTicketFilter } = this.props;
+    const { changeTicketsFilter } = this.props;
     return (
       <React.Fragment>
         <section className="template__block">
@@ -40,35 +45,43 @@ class Aside extends React.Component<{
             // tslint:disable-next-line jsx-no-lambda
             commonOnchange={(e: React.FormEvent<HTMLUListElement>) => {
               const target: any = e.target;
-              changeTicketFilter(target.value);
+              changeTicketsFilter(target.value);
             }}
             variants={[
               {
                 value: 'all',
                 labeltext: 'Все',
                 additionalrender: () => (
-                  <Button className="checkbox__only">Только</Button>
+                  <Button onClick={this.onlyHandler} className="checkbox__only">
+                    Только
+                  </Button>
                 ),
               },
               {
                 value: '0',
                 labeltext: 'Без пересадок',
                 additionalrender: () => (
-                  <Button className="checkbox__only">Только</Button>
+                  <Button onClick={this.onlyHandler} className="checkbox__only">
+                    Только
+                  </Button>
                 ),
               },
               {
                 value: '2',
                 labeltext: '2 пересадки',
                 additionalrender: () => (
-                  <Button className="checkbox__only">Только</Button>
+                  <Button onClick={this.onlyHandler} className="checkbox__only">
+                    Только
+                  </Button>
                 ),
               },
               {
                 value: '3',
                 labeltext: '3 пересадки',
                 additionalrender: () => (
-                  <Button className="checkbox__only">Только</Button>
+                  <Button onClick={this.onlyHandler} className="checkbox__only">
+                    Только
+                  </Button>
                 ),
               },
             ]}
@@ -78,10 +91,30 @@ class Aside extends React.Component<{
       </React.Fragment>
     );
   }
+  protected onlyHandler = (e: React.FormEvent<HTMLButtonElement>) => {
+    const { resetTicketsFilter, changeTicketsFilter } = this.props;
+    const target: any = e.target;
+    const currentParent = target.parentNode;
+    const currentInput: HTMLInputElement =
+      currentParent && currentParent.querySelector('input');
+    const commonParent: HTMLElement = currentParent && currentParent.parentNode;
+    const allInputs: HTMLInputElement[] = commonParent
+      ? [].slice.call(commonParent.querySelectorAll('input'))
+      : [];
+    allInputs.forEach((input: HTMLInputElement) => {
+      input.checked = false;
+      resetTicketsFilter();
+    });
+    currentInput.checked = true;
+    changeTicketsFilter(currentInput.value);
+  };
 }
 
 export default connect(null, dispatch => ({
-  changeTicketFilter: (filterValue: filterValueType) => {
+  changeTicketsFilter: (filterValue: filterValueType) => {
     dispatch(filterTicketsActionCreator(filterValue));
+  },
+  resetTicketsFilter: () => {
+    dispatch(resetTicketsFilterActionCreator());
   },
 }))(Aside);

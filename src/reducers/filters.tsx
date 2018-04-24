@@ -2,6 +2,7 @@ import { IAction } from '../actions';
 import {
   FILTER_TICKETS_BY_NUMBER_OF_TRANSFERS,
   filterValueType,
+  RESET_TICKETS_FILTER,
 } from '../actions/filters';
 
 export const filters = (state: filterValueType[] = [], action: IAction) => {
@@ -11,6 +12,8 @@ export const filters = (state: filterValueType[] = [], action: IAction) => {
         return state.filter((item: filterValueType) => item !== action.payload);
       }
       return [...state, action.payload];
+    case RESET_TICKETS_FILTER:
+      return [];
     default:
       return state;
   }
