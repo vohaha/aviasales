@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { CurrencyIdType } from '../../actions/currency';
 import { FilterValueType } from '../../actions/filters';
+import { loadTicketsActionCreator } from '../../actions/tickets';
 import Ticket, { ITicketProps } from '../../components/Ticket';
 import { IState } from '../../reducers';
 
@@ -18,7 +19,18 @@ class Tickets extends React.Component<{
   ticketsArr: ITicketProps[];
   filters: FilterValueType[];
   currency: CurrencyIdType;
+  loadTickets: (ticketsArr: ITicketProps[]) => void;
 }> {
+  public componentDidMount() {
+    fetch('./tickets.json')
+      .then((resp: Response) => resp.json())
+      .then((data: { tickets: ITicketProps[] }) => {
+        this.props.loadTickets(data.tickets);
+      })
+      .catch((err: Error) => {
+        console.dir(err);
+      });
+  }
   public render() {
     const { ticketsArr, filters, currency } = this.props;
     return ticketsArr
@@ -52,5 +64,9 @@ export default connect(
     filters: state.filters,
     currency: state.currency,
   }),
-  null,
+  (dispatch: any) => ({
+    loadTickets: (ticketsArr: ITicketProps[]) => {
+      dispatch(loadTicketsActionCreator(ticketsArr));
+    },
+  }),
 )(Tickets);

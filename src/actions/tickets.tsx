@@ -4,12 +4,14 @@ import { IAction } from './index';
 export const LOAD_TICKETS = 'LOAD_TICKETS';
 
 export type loadTicketsAction = (
-  ticketsList: ITicketProps[],
+  arrOfTickets: ITicketProps[],
 ) => IAction & {
   payload: ITicketProps[];
 };
 
-export const loadTicketsActionCreator: loadTicketsAction = arrOfTickets => ({
+export const loadTicketsActionCreator: loadTicketsAction = (
+  arrOfTickets: ITicketProps[],
+) => ({
   type: LOAD_TICKETS,
   payload: arrOfTickets,
 });
