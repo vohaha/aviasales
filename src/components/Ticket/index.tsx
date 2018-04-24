@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { CurrencyIdType } from '../../actions/currency';
 import Button from '../Button';
 import Paper from '../Paper';
 import './index.css';
@@ -16,7 +17,28 @@ export interface ITicketProps extends React.HTMLProps<HTMLElement> {
   carrier: string;
   stops: number;
   price: number;
+  currency?: string;
 }
+
+const currencyInfo = {
+  rub: {
+    coefficient: 1,
+    sign: '​₽',
+  },
+  usd: {
+    coefficient: 0.02,
+    sign: '$',
+  },
+  eur: {
+    coefficient: 0.013,
+    sign: '€',
+  },
+};
+
+const currencyTemplater = (currency: CurrencyIdType = 'rub', price: number) => {
+  const poweredPrice = Number((price * currencyInfo[currency].coefficient).toFixed(2));
+  return `Купить\nза ${poweredPrice}${currencyInfo[currency].sign}`;
+};
 
 export const Ticket: React.SFC<ITicketProps> = ({
   origin,
@@ -30,6 +52,7 @@ export const Ticket: React.SFC<ITicketProps> = ({
   carrier,
   stops,
   price,
+  currency,
 }) => {
   return (
     <Paper tag="article" className="ticket">
@@ -40,7 +63,7 @@ export const Ticket: React.SFC<ITicketProps> = ({
           className="ticket__carrier"
         />
         <Button className="ticket__buy" type="button">
-          Купить<br />за {price}​₽
+          {currencyTemplater(currency, price)}
         </Button>
       </div>
       <div className="ticket__main">

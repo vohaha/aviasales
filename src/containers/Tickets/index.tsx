@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { filterValueType } from '../../actions/filters';
+import { CurrencyIdType } from '../../actions/currency';
+import { FilterValueType } from '../../actions/filters';
 import Ticket, { ITicketProps } from '../../components/Ticket';
 import { IState } from '../../reducers';
 
@@ -15,10 +16,11 @@ const sortFn: (
 
 class Tickets extends React.Component<{
   ticketsArr: ITicketProps[];
-  filters: filterValueType[];
+  filters: FilterValueType[];
+  currency: CurrencyIdType;
 }> {
   public render() {
-    const { ticketsArr, filters } = this.props;
+    const { ticketsArr, filters, currency } = this.props;
     return ticketsArr
       .filter(ticket => {
         if (
@@ -38,6 +40,7 @@ class Tickets extends React.Component<{
             ticket.destination
           }`}
           {...ticket}
+          currency={currency}
         />
       ));
   }
@@ -47,6 +50,7 @@ export default connect(
   (state: IState) => ({
     ticketsArr: state.tickets,
     filters: state.filters,
+    currency: state.currency,
   }),
   null,
 )(Tickets);

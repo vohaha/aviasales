@@ -2,13 +2,14 @@ import * as classNames from 'classnames';
 import * as React from 'react';
 import './index.css';
 
-interface IChoiceBoxProps extends React.HTMLProps<HTMLUListElement> {
-  variants: Array<
-    React.HTMLProps<HTMLInputElement> & {
-      additionalrender?: () => any;
-      labeltext: string;
-    }
-  >;
+export interface IChoiceBoxVariant extends React.HTMLProps<HTMLInputElement> {
+  additionalrender?: () => any;
+  labeltext: string;
+  defaultChecked?: boolean;
+}
+
+export interface IChoiceBoxProps extends React.HTMLProps<HTMLUListElement> {
+  variants: IChoiceBoxVariant[];
   name: string;
   type: 'radio' | 'checkbox';
   commonOnchange?: (e: React.FormEvent<HTMLUListElement>) => void;

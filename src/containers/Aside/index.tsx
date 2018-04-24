@@ -1,41 +1,61 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { changeCurrencyActionCreator, CurrencyIdType } from '../../actions/currency';
 import {
   filterTicketsActionCreator,
-  filterValueType,
+  FilterValueType,
   resetTicketsFilterActionCreator,
 } from '../../actions/filters';
 import Button from '../../components/Button';
-import ChoiceBox from '../../components/ChoiceBox';
+import ChoiceBox, { IChoiceBoxVariant } from '../../components/ChoiceBox';
+import { IState } from '../../reducers';
 
-class Aside extends React.Component<{
-  changeTicketsFilter: (filterValue: filterValueType) => void;
+const currencyVariants: IChoiceBoxVariant[] = [
+  {
+    value: 'rub',
+    labeltext: 'rub',
+  },
+  {
+    value: 'usd',
+    labeltext: 'usd',
+  },
+  {
+    value: 'eur',
+    labeltext: 'eur',
+  },
+];
+
+interface IAsideProps {
+  currency: CurrencyIdType;
+  changeTicketsFilter: (filterValue: FilterValueType) => void;
   resetTicketsFilter: () => void;
-}> {
+  changeCurrency: (newCurrency: CurrencyIdType) => void;
+}
+
+class Aside extends React.Component<IAsideProps> {
+  constructor(props: IAsideProps) {
+    super(props);
+    currencyVariants.forEach((variant: IChoiceBoxVariant) => {
+      if (variant.value === this.props.currency) {
+        variant.defaultChecked = true;
+      }
+    });
+  }
   public render() {
-    const { changeTicketsFilter } = this.props;
+    const { changeTicketsFilter, changeCurrency } = this.props;
     return (
       <React.Fragment>
         <section className="template__block">
           <h2 className="template__title">Валюта</h2>
           <ChoiceBox
             type="radio"
-            variants={[
-              {
-                value: 'rub',
-                labeltext: 'rub',
-                defaultChecked: true,
-              },
-              {
-                value: 'usd',
-                labeltext: 'usd',
-              },
-              {
-                value: 'eur',
-                labeltext: 'eur',
-              },
-            ]}
+            variants={currencyVariants}
             name="currency"
+            // tslint:disable-next-line jsx-no-lambda
+            commonOnchange={(e: React.FormEvent<HTMLUListElement>) => {
+              const target: any = e.target;
+              changeCurrency(target.value);
+            }}
           />
         </section>
         <section className="template__block template__block--full-width">
@@ -110,11 +130,19 @@ class Aside extends React.Component<{
   };
 }
 
-export default connect(null, dispatch => ({
-  changeTicketsFilter: (filterValue: filterValueType) => {
-    dispatch(filterTicketsActionCreator(filterValue));
-  },
-  resetTicketsFilter: () => {
-    dispatch(resetTicketsFilterActionCreator());
-  },
-}))(Aside);
+export default connect(
+  (state: IState) => ({
+    currency: state.currency,
+  }),
+  dispatch => ({
+    changeTicketsFilter: (filterValue: FilterValueType) => {
+      dispatch(filterTicketsActionCreator(filterValue));
+    },
+    resetTicketsFilter: () => {
+      dispatch(resetTicketsFilterActionCreator());
+    },
+    changeCurrency: (newCurrency: CurrencyIdType) => {
+      dispatch(changeCurrencyActionCreator(newCurrency));
+    },
+  }),
+)(Aside);
