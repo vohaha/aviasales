@@ -1,9 +1,10 @@
 import { IAction } from './index';
 
+export type FilterValueType = string | 'all';
+
 /* set filter */
 export const FILTER_TICKETS_BY_NUMBER_OF_TRANSFERS =
   'FILTER_TICKETS_BY_NUMBER_OF_TRANSFERS';
-export type FilterValueType = string | 'all';
 export type FilterTicketsActionCreatorType = (
   numberOfTransfers: FilterValueType,
 ) => IAction & {

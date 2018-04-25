@@ -14,11 +14,9 @@ export interface IState {
     currencies: ICurrencies;
   };
 }
-
 const rootReducer = combineReducers({
   tickets,
   filters,
   currency,
 });
-
 export default rootReducer;

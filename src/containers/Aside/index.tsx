@@ -45,38 +45,22 @@ class Aside extends React.Component<IAsideProps> {
               {
                 value: 'all',
                 labeltext: 'Все',
-                additionalrender: () => (
-                  <Button onClick={this.onlyHandler} className="checkbox__only">
-                    Только
-                  </Button>
-                ),
+                additionalrender: this.onlyButton,
               },
               {
                 value: '0',
                 labeltext: 'Без пересадок',
-                additionalrender: () => (
-                  <Button onClick={this.onlyHandler} className="checkbox__only">
-                    Только
-                  </Button>
-                ),
+                additionalrender: this.onlyButton,
               },
               {
                 value: '2',
                 labeltext: '2 пересадки',
-                additionalrender: () => (
-                  <Button onClick={this.onlyHandler} className="checkbox__only">
-                    Только
-                  </Button>
-                ),
+                additionalrender: this.onlyButton,
               },
               {
                 value: '3',
                 labeltext: '3 пересадки',
-                additionalrender: () => (
-                  <Button onClick={this.onlyHandler} className="checkbox__only">
-                    Только
-                  </Button>
-                ),
+                additionalrender: this.onlyButton,
               },
             ]}
             name="transfer"
@@ -86,6 +70,11 @@ class Aside extends React.Component<IAsideProps> {
     );
   }
 
+  private onlyButton = () => (
+    <Button onClick={this.onlyHandler} className="checkbox__only">
+      Только
+    </Button>
+  );
   private onlyHandler = (e: React.FormEvent<HTMLButtonElement>) => {
     const { resetTicketsFilter, changeTicketsFilter } = this.props;
     const target: any = e.target;
@@ -125,7 +114,6 @@ class Aside extends React.Component<IAsideProps> {
     });
   };
 }
-
 export default connect(
   (state: IState) => ({
     currency: state.currency,

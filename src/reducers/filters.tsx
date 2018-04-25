@@ -18,5 +18,4 @@ export const filters = (state: FilterValueType[] = [], action: IAction) => {
       return state;
   }
 };
-
 export default filters;

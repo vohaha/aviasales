@@ -17,7 +17,6 @@ const sortFn: (
     price: number;
   },
 ) => any = (a, b) => a.price > b.price;
-
 class Tickets extends React.Component<{
   ticketsArr: ITicketProps[];
   filters: FilterValueType[];
@@ -55,7 +54,6 @@ class Tickets extends React.Component<{
       .sort(sortFn);
   }
 }
-
 export default connect(
   (state: IState) => ({
     ticketsArr: state.tickets,

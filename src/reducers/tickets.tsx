@@ -10,5 +10,4 @@ export const tickets = (state: ITicketProps[] = [], action: IAction) => {
       return state;
   }
 };
-
 export default tickets;

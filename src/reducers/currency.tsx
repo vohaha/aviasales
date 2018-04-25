@@ -21,16 +21,14 @@ const defaultCurrencies: ICurrency = {
     },
   },
 };
-
 export const currency = (state: ICurrency = defaultCurrencies, action: IAction) => {
   switch (action.type) {
     case LOAD_CURRENCIES:
-      return { currentCurrency: state.currentCurrency, currencies: action.payload };
+      return { ...state, currencies: action.payload };
     case CHANGE_CURRENT_CURRENCY:
-      return { currentCurrency: action.payload, currencies: state.currencies };
+      return { ...state, currentCurrency: action.payload };
     default:
       return state;
   }
 };
-
 export default currency;
