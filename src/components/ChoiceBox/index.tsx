@@ -3,6 +3,7 @@ import * as React from 'react';
 import './index.css';
 
 export interface IChoiceBoxVariant extends React.HTMLProps<HTMLInputElement> {
+  value: string;
   additionalrender?: () => any;
   labeltext: string;
   defaultChecked?: boolean;

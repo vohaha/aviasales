@@ -4,19 +4,19 @@ import { IAction } from './index';
 export const FILTER_TICKETS_BY_NUMBER_OF_TRANSFERS =
   'FILTER_TICKETS_BY_NUMBER_OF_TRANSFERS';
 export type FilterValueType = string | 'all';
-export type filterTicketsActionType = (
+export type FilterTicketsActionCreatorType = (
   numberOfTransfers: FilterValueType,
 ) => IAction & {
   payload: FilterValueType;
 };
-export const filterTicketsActionCreator: filterTicketsActionType = numberOfTransfers => ({
+export const filterTicketsActionCreator: FilterTicketsActionCreatorType = numberOfTransfers => ({
   type: FILTER_TICKETS_BY_NUMBER_OF_TRANSFERS,
   payload: numberOfTransfers,
 });
 
 /* reset filter */
 export const RESET_TICKETS_FILTER = 'RESET_TICKETS_FILTER';
-export type resetTicketsFilterActionType = () => IAction;
-export const resetTicketsFilterActionCreator: resetTicketsFilterActionType = () => ({
+export type ResetTicketsFilterActionCreatorType = () => IAction;
+export const resetTicketsFilterActionCreator: ResetTicketsFilterActionCreatorType = () => ({
   type: RESET_TICKETS_FILTER,
 });

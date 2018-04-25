@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { CurrencyIdType } from '../actions/currency';
+import { CurrencyIdType, ICurrencies } from '../actions/currency';
 import { FilterValueType } from '../actions/filters';
 import { ITicketProps } from '../components/Ticket';
 import currency from './currency';
@@ -9,7 +9,10 @@ import tickets from './tickets';
 export interface IState {
   tickets: ITicketProps[];
   filters: FilterValueType[];
-  currency: CurrencyIdType;
+  currency: {
+    currentCurrency: CurrencyIdType;
+    currencies: ICurrencies;
+  };
 }
 
 const rootReducer = combineReducers({

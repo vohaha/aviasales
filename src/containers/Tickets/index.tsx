@@ -2,7 +2,10 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { CurrencyIdType } from '../../actions/currency';
 import { FilterValueType } from '../../actions/filters';
-import { loadTicketsActionCreator } from '../../actions/tickets';
+import {
+  fetchTicketsActionCreator,
+  fetchTicketsActionCreatorType,
+} from '../../actions/tickets';
 import Ticket, { ITicketProps } from '../../components/Ticket';
 import { IState } from '../../reducers';
 
@@ -18,43 +21,38 @@ const sortFn: (
 class Tickets extends React.Component<{
   ticketsArr: ITicketProps[];
   filters: FilterValueType[];
-  currency: CurrencyIdType;
-  loadTickets: (ticketsArr: ITicketProps[]) => void;
+  currentCurrency: CurrencyIdType;
+  fetchTickets: fetchTicketsActionCreatorType;
 }> {
   public componentDidMount() {
-    fetch('./tickets.json')
-      .then((resp: Response) => resp.json())
-      .then((data: { tickets: ITicketProps[] }) => {
-        this.props.loadTickets(data.tickets);
-      })
-      .catch((err: Error) => {
-        console.dir(err);
-      });
+    this.props.fetchTickets();
   }
   public render() {
-    const { ticketsArr, filters, currency } = this.props;
-    return ticketsArr
-      .filter(ticket => {
-        if (
-          filters.length === 0 ||
-          !!filters.find(filterValue => filterValue === 'all')
-        ) {
-          return true;
-        }
-        return !!filters.find(filterValue => {
-          return Number(filterValue) === ticket.stops;
-        });
-      })
-      .sort(sortFn)
-      .map((ticket: ITicketProps) => (
-        <Ticket
-          key={`${ticket.arrival_time}${ticket.departure_time}${ticket.origin}${
-            ticket.destination
-          }`}
-          {...ticket}
-          currency={currency}
-        />
-      ));
+    const { ticketsArr, filters, currentCurrency } = this.props;
+    return this.getTicketsForRender(ticketsArr, filters).map((ticket: ITicketProps) => (
+      <Ticket
+        key={`${ticket.arrival_time}${ticket.departure_time}${ticket.origin}${
+          ticket.destination
+        }`}
+        {...ticket}
+        currency={currentCurrency}
+      />
+    ));
+  }
+  private getTicketsForRender(
+    allAvailableTickets: ITicketProps[] = [],
+    filters: FilterValueType[] = [],
+  ) {
+    /* if no settled filters or set filter "all" */
+    const isFiltersAllowShowAllTickets: boolean =
+      !filters.length || !!filters.find(filterValue => filterValue === 'all');
+    return allAvailableTickets
+      .filter(
+        ticket =>
+          isFiltersAllowShowAllTickets ||
+          !!filters.find(filterValue => Number(filterValue) === ticket.stops),
+      )
+      .sort(sortFn);
   }
 }
 
@@ -62,11 +60,9 @@ export default connect(
   (state: IState) => ({
     ticketsArr: state.tickets,
     filters: state.filters,
-    currency: state.currency,
+    currentCurrency: state.currency.currentCurrency,
   }),
-  (dispatch: any) => ({
-    loadTickets: (ticketsArr: ITicketProps[]) => {
-      dispatch(loadTicketsActionCreator(ticketsArr));
-    },
-  }),
+  {
+    fetchTickets: fetchTicketsActionCreator,
+  },
 )(Tickets);
