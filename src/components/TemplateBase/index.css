@@ -48,7 +48,7 @@
   text-transform: uppercase;
 }
 
-@media (max-width: 840px) {
+@media (max-width: 800px) {
   .template__aside {
     margin-right: 0;
   }
