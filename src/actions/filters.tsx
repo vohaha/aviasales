@@ -1,23 +1,36 @@
+import { IChoiceBoxVariant } from '../components/ChoiceBox';
 import { IAction } from './index';
 
-export type FilterValueType = string | 'all';
+export type TransferFilterIdType = string;
 
-/* set filter */
-export const FILTER_TICKETS_BY_NUMBER_OF_TRANSFERS =
-  'FILTER_TICKETS_BY_NUMBER_OF_TRANSFERS';
-export type FilterTicketsActionCreatorType = (
-  numberOfTransfers: FilterValueType,
+export interface ITransferFilters {
+  [filter: string]: ITransferFilterItem;
+}
+
+export interface ITransferFilterItem extends IChoiceBoxVariant {
+  additionalrender?: () => React.Component;
+}
+
+export interface IFilter {
+  currentTransfers: TransferFilterIdType[];
+  transfers: ITransferFilters;
+}
+
+/* change transfer filter */
+export const CHANGE_TRANSFER_FILTER = 'CHANGE_TRANSFER_FILTER';
+export type ChangeTicketsFilterActionCreatorType = (
+  filters: TransferFilterIdType,
 ) => IAction & {
-  payload: FilterValueType;
+  payload: TransferFilterIdType;
 };
-export const filterTicketsActionCreator: FilterTicketsActionCreatorType = numberOfTransfers => ({
-  type: FILTER_TICKETS_BY_NUMBER_OF_TRANSFERS,
-  payload: numberOfTransfers,
+export const ChangeTransferFilterActionCreator: ChangeTicketsFilterActionCreatorType = filterId => ({
+  type: CHANGE_TRANSFER_FILTER,
+  payload: filterId,
 });
 
-/* reset filter */
-export const RESET_TICKETS_FILTER = 'RESET_TICKETS_FILTER';
-export type ResetTicketsFilterActionCreatorType = () => IAction;
-export const resetTicketsFilterActionCreator: ResetTicketsFilterActionCreatorType = () => ({
-  type: RESET_TICKETS_FILTER,
+/* reset transfer filter */
+export const RESET_TRANSFER_FILTER = 'RESET_TRANSFER_FILTER';
+export type ResetTransferFilterActionCreatorType = () => IAction;
+export const resetTransferFilterActionCreator: ResetTransferFilterActionCreatorType = () => ({
+  type: RESET_TRANSFER_FILTER,
 });

@@ -7,10 +7,13 @@ import {
   ICurrency,
 } from '../../actions/currency';
 import {
-  filterTicketsActionCreator,
-  FilterTicketsActionCreatorType,
-  resetTicketsFilterActionCreator,
-  ResetTicketsFilterActionCreatorType,
+  ChangeTransferFilterActionCreator,
+  IFilter,
+  ITransferFilterItem,
+  ITransferFilters,
+  resetTransferFilterActionCreator,
+  ResetTransferFilterActionCreatorType,
+  TransferFilterIdType,
 } from '../../actions/filters';
 import Button from '../../components/Button';
 import ChoiceBox, { IChoiceBoxVariant } from '../../components/ChoiceBox';
@@ -18,8 +21,9 @@ import { IState } from '../../reducers';
 
 interface IAsideProps {
   currency: ICurrency;
-  changeTicketsFilter: FilterTicketsActionCreatorType;
-  resetTicketsFilter: ResetTicketsFilterActionCreatorType;
+  filters: IFilter;
+  resetTransferFilter: ResetTransferFilterActionCreatorType;
+  changeTransferFilter: ChangeCurrentCurrencyActionCreatorType;
   changeCurrentCurrency: ChangeCurrentCurrencyActionCreatorType;
 }
 
@@ -41,28 +45,7 @@ class Aside extends React.Component<IAsideProps> {
           <ChoiceBox
             type="checkbox"
             commonOnchange={this.changeTicketsFilterHandler}
-            variants={[
-              {
-                value: 'all',
-                labeltext: 'Все',
-                additionalrender: this.onlyButton,
-              },
-              {
-                value: '0',
-                labeltext: 'Без пересадок',
-                additionalrender: this.onlyButton,
-              },
-              {
-                value: '2',
-                labeltext: '2 пересадки',
-                additionalrender: this.onlyButton,
-              },
-              {
-                value: '3',
-                labeltext: '3 пересадки',
-                additionalrender: this.onlyButton,
-              },
-            ]}
+            variants={this.getFiltersArr()}
             name="transfer"
           />
         </section>
@@ -70,35 +53,40 @@ class Aside extends React.Component<IAsideProps> {
     );
   }
 
-  private onlyButton = () => (
-    <Button onClick={this.onlyHandler} className="checkbox__only">
-      Только
-    </Button>
-  );
-  private onlyHandler = (e: React.FormEvent<HTMLButtonElement>) => {
-    const { resetTicketsFilter, changeTicketsFilter } = this.props;
+  private onlyButtonHandler = (transferFilterId: TransferFilterIdType) => {
+    this.props.resetTransferFilter();
+    this.props.changeTransferFilter(transferFilterId);
+  };
+  private onlyButton = (transferFilterId: TransferFilterIdType) => {
+    return (
+      <Button
+        onClick={this.onlyButtonHandler.bind(this, transferFilterId)}
+        className="checkbox__only"
+      >
+        Только
+      </Button>
+    );
+  };
+  private changeTicketsFilterHandler = (e: React.FormEvent<HTMLUListElement>) => {
     const target: any = e.target;
-    const currentParent = target.parentNode;
-    const currentInput: HTMLInputElement =
-      currentParent && currentParent.querySelector('input');
-    const commonParent: HTMLElement = currentParent && currentParent.parentNode;
-    const allInputs: HTMLInputElement[] = commonParent
-      ? [].slice.call(commonParent.querySelectorAll('input'))
-      : [];
-    allInputs.forEach((input: HTMLInputElement) => {
-      input.checked = false;
-      resetTicketsFilter();
+    this.props.changeTransferFilter(target.value);
+  };
+  private getFiltersArr = (): IChoiceBoxVariant[] => {
+    const allFilters: IFilter = this.props.filters;
+    const transferFilters: ITransferFilters = allFilters.transfers;
+    const keys = Object.keys(transferFilters);
+    return keys.map((filterId: TransferFilterIdType): IChoiceBoxVariant => {
+      const currentFilter: ITransferFilterItem = transferFilters[filterId];
+      return {
+        ...currentFilter,
+        value: filterId,
+        additionalrender: this.onlyButton.bind(this, filterId),
+      };
     });
-    currentInput.checked = true;
-    changeTicketsFilter(currentInput.value);
   };
   private changeCurrencyHandler = (e: React.FormEvent<HTMLUListElement>) => {
     const target: any = e.target;
     this.props.changeCurrentCurrency(target.value);
-  };
-  private changeTicketsFilterHandler = (e: React.FormEvent<HTMLUListElement>) => {
-    const target: any = e.target;
-    this.props.changeTicketsFilter(target.value);
   };
   private getCurrenciesArr = (): IChoiceBoxVariant[] => {
     const currency: ICurrency = this.props.currency;
@@ -117,10 +105,11 @@ class Aside extends React.Component<IAsideProps> {
 export default connect(
   (state: IState) => ({
     currency: state.currency,
+    filters: state.filters,
   }),
   {
-    changeTicketsFilter: filterTicketsActionCreator,
-    resetTicketsFilter: resetTicketsFilterActionCreator,
+    resetTransferFilter: resetTransferFilterActionCreator,
+    changeTransferFilter: ChangeTransferFilterActionCreator,
     changeCurrentCurrency: changeCurrentCurrencyActionCreator,
   },
 )(Aside);

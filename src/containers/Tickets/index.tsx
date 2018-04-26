@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { CurrencyIdType } from '../../actions/currency';
-import { FilterValueType } from '../../actions/filters';
+import { IFilter } from '../../actions/filters';
 import {
   fetchTicketsActionCreator,
   fetchTicketsActionCreatorType,
@@ -18,8 +18,8 @@ const sortFn: (
   },
 ) => any = (a, b) => a.price > b.price;
 class Tickets extends React.Component<{
-  ticketsArr: ITicketProps[];
-  filters: FilterValueType[];
+  tickets: ITicketProps[];
+  filters: IFilter;
   currentCurrency: CurrencyIdType;
   fetchTickets: fetchTicketsActionCreatorType;
 }> {
@@ -27,8 +27,8 @@ class Tickets extends React.Component<{
     this.props.fetchTickets();
   }
   public render() {
-    const { ticketsArr, filters, currentCurrency } = this.props;
-    return this.getTicketsForRender(ticketsArr, filters).map((ticket: ITicketProps) => (
+    const { currentCurrency } = this.props;
+    return this.getTicketsForRender().map((ticket: ITicketProps) => (
       <Ticket
         key={`${ticket.arrival_time}${ticket.departure_time}${ticket.origin}${
           ticket.destination
@@ -38,25 +38,28 @@ class Tickets extends React.Component<{
       />
     ));
   }
-  private getTicketsForRender(
-    allAvailableTickets: ITicketProps[] = [],
-    filters: FilterValueType[] = [],
-  ) {
+
+  private getTicketsForRender() {
+    const {
+      tickets,
+      filters: { currentTransfers },
+    } = this.props;
     /* if no settled filters or set filter "all" */
     const isFiltersAllowShowAllTickets: boolean =
-      !filters.length || !!filters.find(filterValue => filterValue === 'all');
-    return allAvailableTickets
+      !currentTransfers.length ||
+      !!currentTransfers.find(filterValue => filterValue === 'all');
+    return tickets
       .filter(
         ticket =>
           isFiltersAllowShowAllTickets ||
-          !!filters.find(filterValue => Number(filterValue) === ticket.stops),
+          !!currentTransfers.find(filterValue => Number(filterValue) === ticket.stops),
       )
       .sort(sortFn);
   }
 }
 export default connect(
   (state: IState) => ({
-    ticketsArr: state.tickets,
+    tickets: state.tickets,
     filters: state.filters,
     currentCurrency: state.currency.currentCurrency,
   }),
